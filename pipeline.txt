@@ -1,0 +1,34 @@
+pipeline {
+    agent any
+    tools{
+        maven 'MAVEN_HOME'
+    }
+
+    stages {
+        stage('git repo & clean') {
+            steps {
+                bat "rmdir /s /q SE"
+                bat "git clone https://github.com/rayyanahmed26042005/SE.git"
+                bat "mvn clean -f SE"
+            }
+        }
+
+        stage('install') {
+            steps {
+                bat "mvn install -f SE"
+            }
+        }
+
+        stage('test') {
+            steps {
+                bat "mvn test -f SE"
+            }
+        }
+
+        stage('package') {
+            steps {
+                bat "mvn package -f SE"
+            }
+        }
+    }
+}
