@@ -1,0 +1,53 @@
+1. Start Minikube
+minikube start
+
+2. Create Deployment
+kubectl create deployment mynginx --image=nginx
+
+Update Deployment Image
+kubectl set image deployment/mynginx nginx=nginx:latest
+
+3. Check Deployments & Pods
+kubectl get deployments
+kubectl get pods
+kubectl describe pods
+
+4. Expose Deployment as Service (NodePort)
+kubectl expose deployment mynginx --type=NodePort --port=80 --target-port=80
+
+5. Scale Deployment
+kubectl scale deployment mynginx --replicas=4
+
+6. Check Service
+kubectl get service mynginx
+
+7. Port Forward
+kubectl port-forward svc/mynginx 8081:80
+
+8. Minikube Service URL
+minikube service mynginx --url
+
+9. Minikube Dashboard
+minikube dashboard
+
+10. Delete Deployment & Service
+kubectl delete deployment mynginx
+kubectl delete service mynginx
+
+11. Stop/Delete Minikube
+minikube stop
+minikube delete
+
+✅ DOCKER (Nagios) IMPORTANT COMMANDS
+1. Pull Image
+docker pull jasonrivers/nagios:latest
+
+2. Run Nagios Container
+docker run --name nagiosdemo -p 8888:80 jasonrivers/nagios:latest
+
+3. Stop & Remove Container
+docker stop nagiosdemo
+docker rm nagiosdemo
+
+4. Remove Image
+docker rmi jasonrivers/nagios:latest
