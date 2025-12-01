@@ -1,33 +1,47 @@
 pipeline {
     agent any
-    tools{
+
+    tools {
         maven 'MAVEN_HOME'
     }
 
     stages {
+
         stage('git repo & clean') {
             steps {
-                bat "rmdir /s /q SE"
+                // Safe delete: avoid failure if SE folder doesn't exist
+                bat '''
+                IF EXIST SE (
+                    echo "Deleting old SE directory..."
+                    rmdir /s /q SE
+                ) ELSE (
+                    echo "SE directory not found, skipping delete."
+                )
+                '''
+
+                // Clone the repo again
                 bat "git clone https://github.com/rayyanahmed26042005/SE.git"
-                bat "mvn clean -f SE"
+
+                // Clean the project
+                bat "mvn -f SE/pom.xml clean"
             }
         }
 
         stage('install') {
             steps {
-                bat "mvn install -f SE"
+                bat "mvn -f SE/pom.xml install"
             }
         }
 
         stage('test') {
             steps {
-                bat "mvn test -f SE"
+                bat "mvn -f SE/pom.xml test"
             }
         }
 
         stage('package') {
             steps {
-                bat "mvn package -f SE"
+                bat "mvn -f SE/pom.xml package"
             }
         }
     }
